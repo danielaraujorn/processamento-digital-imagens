@@ -1,0 +1,41 @@
+#include <iostream>
+#include <opencv2/opencv.hpp>
+
+using namespace cv;
+using namespace std;
+
+int main(int, char**){
+  Mat image;
+  Vec3b val;
+
+  image= imread("bolhas.png",CV_LOAD_IMAGE_GRAYSCALE);
+  if(!image.data)
+    cout << "nao abriu bolhas.png" << endl;
+
+  namedWindow("janela1",WINDOW_AUTOSIZE);
+
+  imshow("janela1", image);
+
+  for(int i=0;i<image.rows;i++){
+    if(image.at<uchar>(i,0)==255){
+      floodFill(image,Point(0,i),0);
+      imshow("janela1", image);
+    }
+    if(image.at<uchar>(i,image.cols-1)==255){
+      floodFill(image,Point(image.cols-1,i),0);
+      imshow("janela1", image);
+    }
+  }
+  for(int i=0;i<image.cols;i++){
+    if(image.at<uchar>(0,i)==255){
+      floodFill(image,Point(i,0),0);
+      imshow("janela1", image);
+    }
+    if(image.at<uchar>(image.rows-1,i)==255){
+      floodFill(image,Point(i,image.rows-1),0);
+      imshow("janela1", image);
+    }
+  }
+  waitKey();
+  return 0;
+}
